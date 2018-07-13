@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Price Quotation
+{% endblock %}
+
+{% block content %}
+{% include "navbar.html" %}
+    <div class="container-fluid">
+        <h1><strong>{{customer_name}}</strong></h1>
+        <h2><strong>{{group_name}}</strong></h2>
+        <h2 class="hidden-print"><strong>{{selected_pricelevel}}</strong></h2>
+
+      {% regroup pricelevelperitem by item.category as list%}
+        {% for category in list%}
+            <div>
+                <h3 class="categorygrouper"><strong><u>{{category.grouper|upper}}</u></strong></h3>
+              <table class="table table-bordered table-hover table-sm table-striped" id="{{category.grouper}} table" name="{{category.grouper}} table">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th class = "col-md-2">Item</th>
+                    <th class = "col-md-auto">Description</th>
+                    <th class = "col-md-1">UOM</th>
+                    <th class = "col-md-1">UOP</th>
+                    <th class = "col-md-1">Price</th>
+                    <th class = "col-md-1 hidden-print">Retail Price</th>
+                  </tr>
+                </thead>
+
+                <tbody class = "myTable" id="{{category.grouper}} items">
+                    {% for i in category.list%}
+                      <tr>
+                        <td><strong>{{i.item.name}}</strong></td>
+                        <td>{{i.item.description}} {{i.item.remark|default_if_none:""}}</td>
+                        <td>{{i.item.unitofmeasure}}</td>
+                        <td>{{i.item.unitofpackage}}</td>
+                        <td class="text-right">${{i.customprice|floatformat:2}}</td>
+                        <td class="text-right hidden-print">${{i.item.salesprice|floatformat:2}}</td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

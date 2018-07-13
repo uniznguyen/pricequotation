@@ -1,0 +1,32 @@
+
+{% block table %}
+{% regroup item by category as list%}
+    {% for category in list%}
+        <h3 class = "categorygrouper"><strong>{{category.grouper}}</strong></h3>
+        <table name = "{{category.grouper}} table" class="table table-bordered table-hover table-sm table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th><input name="select_all_cat" value="1" id="select_all_cat" type="checkbox" class = "select_all_cat"></th>
+                <th class="col-md-1">Item</th>
+                <th class="col-md-8">Description</th>
+                <th class="col-md-1">UOM</th>
+                <th class="col-md-1">UOP</th>
+                <th class="col-md-1">Retail Price</th>
+              </tr>
+            </thead>
+
+            <tbody class = "myTable" id="{{category.grouper}} body">
+                {% for i in category.list%}
+                  <tr>
+                    <td><input type="checkbox" name="selected_items" value="{{i.name}}" checked="checked"></td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.description}}</td>
+                        <td>{{i.unitofmeasure}}</td>
+                        <td>{{i.unitofpackage}}</td>
+                        <td class="text-md-right">${{i.salesprice|floatformat:"-2"}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Main Page
+{% endblock %}
+
+{% block content %}
+<form method="post">
+{% csrf_token %}
+
+
+<div class="container-fluid">
+    <h2>Please select price level</h2>
+    <select class="container-fluid" name="selected_pricelevel">
+        {% for pricelevel in pricelevels %}
+            <option id="{{pricelevel.id}}" value="{{pricelevel.id}}">{{pricelevel.name}}</option>
+        {% endfor %}
+    </select>
+
+    <button name="Submit" type="submit" class="btn btn-outline-primary">Submit</button>
+
+  <p>Type something in the input field to search the table for stock number, description, size:</p>
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <br>
+    <input name="select_all_master" type="button" class="btn btn-outline-primary" id="select_all_master" value="Select All"></input>
+  {% regroup item by category as list%}
+    {% for category in list%}
+        <h3 class = "categorygrouper"><strong>{{category.grouper}}</strong></h3>
+        <table name = "{{category.grouper}} table" class="table table-bordered table-hover table-sm table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th><input name="select_all_cat" value="1" id="select_all_cat" type="checkbox" class = "select_all_cat" checked></th>
+                <th class="col-md-1">Item</th>
+                <th class="col-md-8">Description</th>
+                <th class="col-md-1">UOM</th>
+                <th class="col-md-1">UOP</th>
+                <th class="col-md-1">Retail Price</th>
+              </tr>
+            </thead>
+
+            <tbody class = "myTable" id="{{category.grouper}} body">
+                {% for i in category.list%}
+                  <tr>
+                    <td><input type="checkbox" name="selected_items" value="{{i.name}}" checked="checked"></td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.description}}</td>
+                        <td>{{i.unitofmeasure}}</td>
+                        <td>{{i.unitofpackage}}</td>
+                        <td class="text-md-right">${{i.salesprice}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>
+</form>
+
+
+
+{% endblock %}
+
+
+

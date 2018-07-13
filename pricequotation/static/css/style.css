@@ -1,0 +1,20 @@
+
+
+thead, th, td , tr {
+    font-size: medium;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+}
+
+.table-bordered th,
+.table-bordered td{
+  border: 1px solid #000 !important;
+}
+
+
+@media print {
+  * {
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+Main Page
+{% endblock %}
+
+
+
+{% block content %}
+    {% include "navbar.html" %}
+  <form method="post">
+    {% csrf_token %}
+
+
+    <div class="container-fluid">
+        <h2>{{group.name}}</h2>
+        <div class = "form-group">
+            <label for = "customer_name"><h4>Please enter customer name:</h4></label>
+            <input class="form-control" name = "customer_name" id = "customer_name" type = "text" placeholder="Please enter customer name">
+        </div>
+
+        <div class = "form-group">
+            <label for = "selected_pricelevel"><h4>Please select price level:</h4></label>
+            <select class="container-fluid" name="selected_pricelevel" id="selected_pricelevel">
+                {% for pricelevel in pricelevels %}
+                    <option id="{{pricelevel.id}}" value="{{pricelevel.id}}">{{pricelevel.name}}</option>
+                {% endfor %}
+            </select>
+            <div class="form-group">
+                <button name="Submit" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Submit</button>
+            </div>
+        </div>
+
+        <div class = "form-group">
+            <label for = "searchbox"><h4>Type something in the input field to search the table for stock number, description, size:</h4></label>
+          <input class="form-control" id="searchbox" type="text" placeholder="Enter keyword to search...">
+        </div>
+
+      <button type="button" class="btn btn-primary" name = "select_all_master" id="select_all_master">Select All</button>
+    {% block table %}
+    {% regroup item by category as list%}
+        {% for category in list%}
+            <h3 class = "categorygrouper"><strong><u>{{category.grouper|upper}}</u></strong></h3>
+            <table name = "{{category.grouper}} table" class="table table-bordered table-hover table-sm table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th><input name="select_all_cat" value="1" id="select_all_cat" type="checkbox" class = "select_all_cat"></th>
+                    <th class="col-md-2">Item</th>
+                    <th class="col-md-auto">Description</th>
+                    <th class="col-md-1">UOM</th>
+                    <th class="col-md-1">UOP</th>
+                    <th class="col-md-1">Retail Price</th>
+                  </tr>
+                </thead>
+
+                <tbody class = "myTable" id="{{category.grouper}} body">
+                    {% for i in category.list%}
+                      <tr>
+                        <td><input type="checkbox" name="selected_items" value="{{i.name}}" checked="checked"></td>
+                            <td><strong>{{i.name}}</strong></td>
+                            <td>{{i.description}} {{i.remark|default_if_none:""}}</td>
+                            <td>{{i.unitofmeasure}}</td>
+                            <td>{{i.unitofpackage}}</td>
+                            <td class="text-right">${{i.salesprice|floatformat:2}}</td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    {% endblock %}
+    </div>
+  </form>
+{% endblock %}
+
+
+
