@@ -8,6 +8,7 @@ import sqlite3 as db
 
 
 # Create your views here.
+# test comment
 
 
 def detail(request,selected_pricelevel,group_name,*args,**kwargs):
