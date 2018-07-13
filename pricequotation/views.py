@@ -8,6 +8,7 @@ import sqlite3 as db
 
 
 # Create your views here.
+# Test change commit
 
 def detail(request,selected_pricelevel,group_name,*args,**kwargs):
     selected_items = request.session['selected_items']
